@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         LSS Mehrere Ausbildungen mit Coins beenden
 // @namespace    www.leitstellenspiel.de
-// @version      1.0
+// @version      1.1
 // @description  Ermöglicht das beenden mehrerer Lehrgänge mit Coins
 // @author       MissSobol
 // @match        https://www.leitstellenspiel.de/schoolings
@@ -50,7 +50,9 @@
         button.innerHTML = "Ausgewählte Ausbildungen beenden";
         button.className = "btn btn-danger";
         button.addEventListener('click', function() {
-            if (confirm("Willst du wirklich " + getSelectedEducationsCount() + " Lehrgänge mit Coins beenden?")) {
+            var selectedCount = getSelectedEducationsCount();
+            var cost = selectedCount * 5; // Kosten berechnen
+            if (confirm("Willst du wirklich " + selectedCount + " Lehrgänge mit Coins beenden? Das kostet dich " + cost + " Coins.")) {
                 finishSelectedEducations();
             }
         });
