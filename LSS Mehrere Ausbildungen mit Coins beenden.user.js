@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         LSS Mehrere Ausbildungen mit Coins beenden
 // @namespace    www.leitstellenspiel.de
-// @version      1.1
+// @version      1.2
 // @description  Ermöglicht das beenden mehrerer Lehrgänge mit Coins
 // @author       MissSobol
 // @match        https://www.leitstellenspiel.de/schoolings
@@ -57,6 +57,34 @@
             }
         });
         table.parentNode.insertBefore(button, table.nextSibling);
+
+        // Event Listener für Multiselektion mit Strg-Taste
+        table.addEventListener('click', function(event) {
+            if (event.target.type === 'checkbox' && event.ctrlKey) {
+                var checkboxes = document.getElementsByClassName('education-checkbox');
+                var start = null;
+                var end = null;
+                for (var i = 0; i < checkboxes.length; i++) {
+                    if (checkboxes[i] === event.target || checkboxes[i] === end) {
+                        if (start === null) {
+                            start = checkboxes[i];
+                        } else {
+                            end = checkboxes[i];
+                        }
+                    }
+                    if (start !== null && end !== null) {
+                        var startIndex = Array.from(checkboxes).indexOf(start);
+                        var endIndex = Array.from(checkboxes).indexOf(end);
+                        var minIndex = Math.min(startIndex, endIndex);
+                        var maxIndex = Math.max(startIndex, endIndex);
+                        for (var j = minIndex; j <= maxIndex; j++) {
+                            checkboxes[j].checked = true;
+                        }
+                        break;
+                    }
+                }
+            }
+        });
     }
 
     // Funktion zum Zählen der ausgewählten Ausbildungen
